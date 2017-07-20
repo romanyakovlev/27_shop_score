@@ -39,28 +39,18 @@
         #time_remaining {font-size: 100px;}
     }
 
-
     </style>
   </head>
 
-  <body class="bg-success">
-
-
-
-                <div class="card card-inverse card-success text-center">
-
-                    <h2 class="my-3">Максимальное время ожидания входящего запроса</h2>
-                    <span id='time_remaining' class="my-2"></span>
-                    <h4 class="my-2">Количество необработанных заказов: <span id="unconfirmed_orders"></span></h4>
-                    <h4 class="my-2">Всего заказов, обработанных за день: <span id="confirmed_orders"></span></h4>
-
-                </div>
-
-
-
-
-
-
+  <body >
+      <div class="container">
+          <div class="text-center">
+              <h2 class="my-3">Максимальное время ожидания входящего запроса</h2>
+              <span id='time_remaining' class="my-2"></span>
+              <h4 class="my-3">Количество необработанных заказов: <span id="unconfirmed_orders"></span></h4>
+              <h4 class="my-3">Всего заказов, обработанных за день: <span id="confirmed_orders"></span></h4>
+          </div>
+      </div>
     <script
   src="https://code.jquery.com/jquery-3.2.1.js"
   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
@@ -84,6 +74,14 @@
              $("#time_remaining").text(seconds+' секунд(ы)');
          } else {
              $("#time_remaining").text(Math.floor(seconds/60)+' минут(ы)');
+         }
+
+         if ( Math.floor(seconds/60) <= 7 ){
+             $("body").attr('class', "bg-success");
+         } else if ( Math.floor(seconds/60) > 7 && Math.floor(seconds/60) <= 15 ){
+             $("body").attr('class', "bg-warning");
+         } else {
+             $("body").attr('class', "bg-danger");
          }
          $("#confirmed_orders").text(data['confirmed_orders_amount']);
          $("#unconfirmed_orders").text(data['unconfirmed_orders_amount']);
