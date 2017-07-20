@@ -11,18 +11,85 @@
 
     <title>Score</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style>
 
+    #time_remaining {
+        font-size: 45px;
+        word-wrap: break-word;
+    }
+
+    @media (min-width: 320px) {
+        #time_remaining {font-size: 55px;}
+    }
+
+    @media (min-width: 576px) {
+        #time_remaining {font-size: 65px;}
+    }
+
+    @media (min-width: 768px) {
+        #time_remaining {font-size: 75px;}
+    }
+
+    @media screen and (min-width: 992px) {
+        #time_remaining {font-size: 90px;}
+    }
+
+    @media (min-width: 1200px){
+        #time_remaining {font-size: 100px;}
+    }
+
+
+    </style>
   </head>
 
-  <body>
+  <body class="bg-success">
 
-    <div class="container">
-      <h1>Here will be score</h1>
-    </div><!-- /.container -->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+                <div class="card card-inverse card-success text-center">
+
+                    <h2 class="my-3">Максимальное время ожидания входящего запроса</h2>
+                    <span id='time_remaining' class="my-2"></span>
+                    <h4 class="my-2">Количество необработанных заказов: <span id="unconfirmed_orders"></span></h4>
+                    <h4 class="my-2">Всего заказов, обработанных за день: <span id="confirmed_orders"></span></h4>
+
+                </div>
+
+
+
+
+
+
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function() {
+        setInterval("ajaxd()", 2000);
+    });
+
+    function ajaxd() {
+      $.ajax({
+       type: "GET",
+       url: "/get_data",
+       success: function(data){
+         seconds = data['total_minutes_remaining']
+         if ( seconds === 0){
+             $("#time_remaining").text('Нет необработанных заказов');
+         } else if ( Math.floor(seconds/60) === 0 ){
+             $("#time_remaining").text(seconds+' секунд(ы)');
+         } else {
+             $("#time_remaining").text(Math.floor(seconds/60)+' минут(ы)');
+         }
+         $("#confirmed_orders").text(data['confirmed_orders_amount']);
+         $("#unconfirmed_orders").text(data['unconfirmed_orders_amount']);
+       }
+     });
+    }
+    </script>
   </body>
 </html>
