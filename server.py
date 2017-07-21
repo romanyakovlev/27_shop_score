@@ -4,7 +4,7 @@ from main import db, app
 from models import Shop
 import datetime
 import pytz
-
+import os
 
 db_session = scoped_session(sessionmaker(bind=db.engine))
 server_timezone = pytz.timezone('Europe/Moscow')
