@@ -14,12 +14,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <style>
 
-    #time_remaining {
-        word-wrap: break-word;
+    .parent-center-vertical{
+        display: table;
+        height: 100vh;
     }
 
-    @media (min-width: 320px) {
-        #time_remaining {font-size: 2.5em;}
+    .child-center-vertical{
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    #time_remaining {
+        word-break: break-all;
+        font-size: 2.5em;
     }
 
     @media (min-width: 576px) {
@@ -42,9 +49,9 @@
   </head>
 
   <body >
-      <div class="container">
-          <div class="text-center">
-              <h2 class="my-3">Максимальное время ожидания входящего запроса</h2>
+      <div class="container parent-center-vertical">
+          <div class="text-center child-center-vertical">
+              <h2 class="my-2">Максимальное время ожидания входящего запроса</h2>
               <span id='time_remaining' class="my-2"></span>
               <h4 class="my-3">Количество необработанных заказов: <span id="unconfirmed_orders"></span></h4>
               <h4 class="my-3">Всего заказов, обработанных за день: <span id="confirmed_orders"></span></h4>
@@ -66,7 +73,7 @@
        type: "GET",
        url: "/get_data",
        success: function(data){
-         seconds = data['total_minutes_remaining']
+         seconds = data['max_processing_time_in_seconds']
          if ( seconds === 0){
              $("#time_remaining").text('Нет необработанных заказов');
          } else if ( Math.floor(seconds/60) === 0 ){

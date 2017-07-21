@@ -1,24 +1,13 @@
-from flask import Flask, render_template, jsonify
-from sqlalchemy.ext.declarative import declarative_base
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, jsonify
 from sqlalchemy.orm import scoped_session, sessionmaker
+from main import db, app
+from models import Shop
 import datetime
 import pytz
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://score:Rysherat2@shopscore.devman.org:5432/shop'
-db = SQLAlchemy(app)
-Base = declarative_base()
-Base.metadata.reflect(db.engine)
-
-
-class Shop(Base):
-    __table__ = Base.metadata.tables['orders']
-
 
 db_session = scoped_session(sessionmaker(bind=db.engine))
-server_tz = pytz.timezone('Europe/Moscow')
+server_timezone = pytz.timezone('Europe/Moscow')
 
 
 @app.route('/')
@@ -28,19 +17,19 @@ def get_page():
 
 @app.route('/get_data')
 def get_data():
-    date_start_day = datetime.datetime.now(server_tz).replace(hour=0, minute=0, second=0, microsecond=0)
-    confirmed_orders_amount = db_session.query(Shop).filter(Shop.status != 'DRAFT').filter(Shop.confirmed > date_start_day).count()
+    max_processing_time_in_seconds = 0
+    start_of_day = datetime.datetime.now(server_timezone).replace(hour=0, minute=0, second=0, microsecond=0)
+    confirmed_orders_amount = db_session.query(Shop).filter(Shop.status != 'DRAFT').filter(Shop.confirmed > start_of_day).count()
     unconfirmed_orders_amount = db_session.query(Shop).filter(Shop.status == 'DRAFT').count()
-    total_minutes_remaining = 0
     processing_orders_count = db_session.query(Shop).filter(Shop.status == 'DRAFT').count()
-    if processing_orders_count != 0:
-        orders_arr = db_session.query(Shop).filter(Shop.status == 'DRAFT').all()
-        time_remaining = max([datetime.datetime.now(pytz.utc) - server_tz.localize(x.created).astimezone(pytz.utc)
-                              for x in orders_arr])
-        total_minutes_remaining = time_remaining.seconds
+    if processing_orders_count is not 0:
+        processing_orders_arr = db_session.query(Shop).filter(Shop.status == 'DRAFT').all()
+        max_processing_time = max([datetime.datetime.now(pytz.utc) - server_timezone.localize(order.created).astimezone(pytz.utc)
+                                                         for order in processing_orders_arr])
+        max_processing_time_in_seconds = max_processing_time.seconds
     return jsonify({'confirmed_orders_amount': confirmed_orders_amount,
-                    'unconfirmed_orders_amount': unconfirmed_orders_amount,
-                    'total_minutes_remaining': total_minutes_remaining})
+                            'unconfirmed_orders_amount': unconfirmed_orders_amount,
+                            'max_processing_time_in_seconds': max_processing_time_in_seconds})
 
 
 if __name__ == "__main__":
