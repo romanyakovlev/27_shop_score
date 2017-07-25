@@ -65,10 +65,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script>
     $(document).ready(function() {
-        setInterval("ajaxd()", 10000);
+        setInterval("ajax_request()", 10000);
     });
 
-    function ajaxd() {
+    function ajax_request() {
       $.ajax({
        type: "GET",
        url: "/get_data",
