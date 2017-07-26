@@ -5,6 +5,8 @@ from models import Shop
 import datetime
 import pytz
 import os
+from flask import request, send_from_directory
+
 
 db_session = scoped_session(sessionmaker(bind=db.engine))
 server_timezone = pytz.timezone('Europe/Moscow')
@@ -30,6 +32,11 @@ def get_data():
     return jsonify({'confirmed_orders_amount': confirmed_orders_amount,
                             'unconfirmed_orders_amount': unconfirmed_orders_amount,
                             'max_processing_time_in_seconds': max_processing_time_in_seconds})
+
+
+@app.route('/robots.txt')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 
 if __name__ == "__main__":
