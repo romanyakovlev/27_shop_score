@@ -27,11 +27,12 @@ def get_data():
     if processing_orders_count is not 0:
         processing_orders_arr = db_session.query(Shop).filter(Shop.status == 'DRAFT').all()
         max_processing_time = max([datetime.datetime.now(pytz.utc) - server_timezone.localize(order.created).astimezone(pytz.utc)
-                                                         for order in processing_orders_arr])
+                                   for order in processing_orders_arr])
         max_processing_time_in_seconds = max_processing_time.seconds
     return jsonify({'confirmed_orders_amount': confirmed_orders_amount,
-                            'unconfirmed_orders_amount': unconfirmed_orders_amount,
-                            'max_processing_time_in_seconds': max_processing_time_in_seconds})
+                    'unconfirmed_orders_amount': unconfirmed_orders_amount,
+                    'max_processing_time_in_seconds': max_processing_time_in_seconds
+                    })
 
 
 @app.route('/robots.txt')
