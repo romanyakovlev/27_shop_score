@@ -10,6 +10,7 @@ from flask import request, send_from_directory
 
 db_session = scoped_session(sessionmaker(bind=db.engine))
 server_timezone = pytz.timezone('Europe/Moscow')
+default_port = 5000
 
 
 @app.route('/')
@@ -41,5 +42,5 @@ def static_from_root():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', default_port))
     app.run(host='0.0.0.0', port=port)
