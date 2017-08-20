@@ -15,31 +15,34 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <style>
 
-    .parent-center-vertical{
-        display: table;
-        height: 100vh;
-    }
 
-    .child-center-vertical{
-        display: table-cell;
-        vertical-align: middle;
-    }
-
-    #time_remaining {
-        word-break: break-all;
-        font-size: 2.5em;
+    @media {
+        #time_remaining {
+            word-break: break-all;
+            font-size: 3.5em;
+            line-height: 50px;
+        }
     }
 
     @media (min-width: 576px) {
-        #time_remaining {font-size: 5em;}
+        #time_remaining {
+            font-size: 5em;
+            line-height: 80px;
+        }
     }
 
     @media (min-width: 768px) {
-        #time_remaining {font-size: 6em;}
+        #time_remaining {
+            font-size: 6em;
+            line-height: 100px;
+        }
     }
 
     @media screen and (min-width: 992px) {
-        #time_remaining {font-size: 7em;}
+        #time_remaining {
+            font-size: 7em;
+            line-height: 135px;
+        }
     }
 
     @media (min-width: 1200px){
@@ -50,12 +53,12 @@
   </head>
 
   <body >
-      <div class="container parent-center-vertical">
-          <div class="text-center child-center-vertical">
-              <h2 class="my-2">Максимальное время ожидания входящего запроса</h2>
-              <span id='time_remaining' class="my-2"></span>
-              <h4 class="my-3">Количество необработанных заказов: <span id="unconfirmed_orders"></span></h4>
-              <h4 class="my-3">Всего заказов, обработанных за день: <span id="confirmed_orders"></span></h4>
+      <div class="container">
+          <div class="text-center">
+              <h4 class="my-4">Максимальное время ожидания входящего запроса</h4>
+              <span id='time_remaining' class="my-4"></span>
+              <h4 class="my-4">Количество необработанных заказов: <span id="unconfirmed_orders"></span></h4>
+              <h4>Всего заказов, обработанных за день: <span id="confirmed_orders"></span></h4>
           </div>
       </div>
     <script
@@ -67,7 +70,7 @@
     <script>
     $(document).ready(function() {
         ajax_request();
-        setInterval("ajax_request()", 10000);
+        setInterval(ajax_request, 10000);
     });
 
     function ajax_request() {
