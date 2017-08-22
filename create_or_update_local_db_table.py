@@ -4,7 +4,7 @@ from main import db
 import os
 
 
-local_engine = create_engine(os.environ['DB_URI'])
+local_engine = create_engine(os.environ['DATABASE_URL'])
 
 if __name__ == "__main__":
     base_class = declarative_base()
