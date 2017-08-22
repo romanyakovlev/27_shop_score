@@ -44,6 +44,18 @@ git clone https://github.com/romanyakovlev/27_shop_score
 pip install -r requirements.txt
 ```
 
+## Загружаем модель данных в локальную бд
+
+```sh
+python create_or_update_local_db_table.py
+```
+
+## Запускаем
+
+```sh
+python server.py
+```
+
 # Project Goals
 
 The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
