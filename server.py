@@ -10,7 +10,7 @@ from flask import request, send_from_directory
 
 db_session = scoped_session(sessionmaker(bind=db.engine))
 server_timezone = pytz.timezone('Europe/Moscow')
-default_port = 5000
+default_port = 5055
 
 
 @app.route('/')
